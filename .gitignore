@@ -6,6 +6,7 @@ build/
 .idea/
 .vscode/
 *.iml
+.env
 
 # System
 .DS_Store
@@ -16,5 +17,7 @@ venv/
 .env/
 ENV/
 
-# SQLite DB
-*.db
+# Backend
+backend/.env
+backend/epic_grind.db
+
