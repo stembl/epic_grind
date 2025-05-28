@@ -1,0 +1,20 @@
+# Flutter/Dart
+.dart_tool/
+.packages
+.pub/
+build/
+.idea/
+.vscode/
+*.iml
+
+# System
+.DS_Store
+Thumbs.db
+
+# Python virtual environments
+venv/
+.env/
+ENV/
+
+# SQLite DB
+*.db
