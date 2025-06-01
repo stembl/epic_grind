@@ -21,3 +21,4 @@ ENV/
 backend/.env
 backend/epic_grind.db
 
+@eaDir/
