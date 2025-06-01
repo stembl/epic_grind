@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'services/email_storage.dart';
 import 'screens/login_screen.dart';
 import 'screens/quest_screen.dart';
+import 'screens/character_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
@@ -10,10 +11,13 @@ void main() async {
 }
 
 class EpicGrindApp extends StatelessWidget {
+  final String? loadEmailOverride;
+  const EpicGrindApp({this.loadEmailOverride});
+
   Future<Widget> _determineStartScreen() async {
     final email = await loadEmail();
     if (email != null && email.isNotEmpty) {
-      return QuestScreen();
+      return QuestScreen(email: email);
     }
     return LoginScreen();
   }
@@ -29,12 +33,23 @@ class EpicGrindApp extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.done) {
             return snapshot.data!;
           } else {
-            return Scaffold(body: Center(child: CircularProgressIndicator()));
+            return const Scaffold(
+              body: Center(child: CircularProgressIndicator()),
+            );
           }
         },
       ),
       routes: {
-        '/quest': (context) => QuestScreen(), // email to be passed explicitly
+        '/quest': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments;
+          final email = args is String ? args : '';
+          return QuestScreen(email: email);
+        },
+        '/character': (context) {
+          final args = ModalRoute.of(context)!.settings.arguments;
+          final email = args is String ? args : '';
+          return CharacterScreen(email: email);
+        },
       },
     );
   }

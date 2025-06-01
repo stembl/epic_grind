@@ -1,84 +1,37 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import '../services/email_storage.dart';
-import 'login_screen.dart';
-import 'quest_screen.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
-class CharacterScreen extends StatefulWidget {
-  @override
-  _CharacterScreenState createState() => _CharacterScreenState();
-}
+class CharacterScreen extends StatelessWidget {
+  final String email;
 
-class _CharacterScreenState extends State<CharacterScreen> {
-  String? email;
-  Map<String, dynamic>? character;
+  const CharacterScreen({Key? key, required this.email}) : super(key: key);
 
-  @override
-  void initState() {
-    super.initState();
-    _loadCharacter();
-  }
-
-  void _loadCharacter() async {
-    final prefs = await SharedPreferences.getInstance();
-    final storedEmail = prefs.getString('email');
-    if (storedEmail != null) {
-      final response = await http.get(Uri.parse('http://localhost:8000/character?email=$storedEmail'));
-      if (response.statusCode == 200) {
-        setState(() {
-          email = storedEmail;
-          character = jsonDecode(response.body);
-        });
-      }
-    }
-  }
-
-  void _logout() async {
+  void _logout(BuildContext context) async {
     await clearEmail();
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (_) => LoginScreen()),
-      (route) => false,
-    );
+    Navigator.pushReplacementNamed(context, '/');
+  }
+
+  void _goToQuests(BuildContext context) {
+    Navigator.pushReplacementNamed(context, '/quest', arguments: email);
   }
 
   @override
   Widget build(BuildContext context) {
-    if (character == null) {
-      return Scaffold(body: Center(child: CircularProgressIndicator()));
-    }
-
     return Scaffold(
       appBar: AppBar(
-        title: Text("Character"),
+        title: const Text('Character'),
         actions: [
-          IconButton(icon: Icon(Icons.logout), onPressed: _logout),
+          IconButton(
+            icon: const Icon(Icons.assignment),
+            onPressed: () => _goToQuests(context),
+          ),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () => _logout(context),
+          ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Name: ${character!['name']}", style: TextStyle(fontSize: 20)),
-            Text("Race: ${character!['race']}", style: TextStyle(fontSize: 20)),
-            Text("Role: ${character!['role']}", style: TextStyle(fontSize: 20)),
-            Text("XP: ${character!['xp']}", style: TextStyle(fontSize: 20)),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => QuestScreen()),
-                );
-              },
-              child: Text("Go to Quests"),
-            )
-          ],
-        ),
-      ),
+      body: const Center(child: Text('Welcome to the Character Screen')),
     );
   }
 }
