@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'services/email_storage.dart';
 import 'screens/login_screen.dart';
 import 'screens/quest_screen.dart';
-import 'screens/character_creation_screen.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 void main() async {
