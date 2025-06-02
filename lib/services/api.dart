@@ -106,3 +106,15 @@ Future<bool> updateCharacter(
   );
   return response.statusCode == 200;
 }
+
+Future<Map<String, dynamic>?> getCharacter(String email) async {
+  final response = await http.get(
+    Uri.parse('$baseUrl/character?email=$email'),
+    headers: {'Content-Type': 'application/json'},
+  );
+  if (response.statusCode == 200) {
+    return jsonDecode(response.body);
+  } else {
+    return null;
+  }
+}

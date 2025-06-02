@@ -57,12 +57,12 @@ class QuestScreen extends StatelessWidget {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () => _logout(context),
-          ),
-          IconButton(
             icon: const Icon(Icons.person),
             onPressed: () => _goToCharacterScreen(context),
+          ),
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () => _logout(context),
           ),
         ],
       ),
