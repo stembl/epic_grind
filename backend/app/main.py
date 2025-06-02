@@ -4,12 +4,21 @@ from app.routes import router
 from dotenv import load_dotenv
 import os
 
-load_dotenv()
+load_dotenv(dotenv_path=".env")
 
 DATABASE_URL = os.getenv("DATABASE_URL")
 SECRET_KEY = os.getenv("SECRET_KEY")
 
+DATABASE_URL = os.getenv("DATABASE_URL")
+print(f"Loaded DB URL: {DATABASE_URL}")  # Add this temporarily for debug
+
+if DATABASE_URL is None:
+    raise RuntimeError("DATABASE_URL not found in environment")
+
 app = FastAPI()
+
+# Mount all API routes from routes.py
+app.include_router(router)
 
 # Enable CORS for all origins (for dev purposes)
 app.add_middleware(
@@ -19,9 +28,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# Mount all API routes from routes.py
-app.include_router(router)
 
 @app.get("/status")
 def get_status():

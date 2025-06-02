@@ -58,14 +58,14 @@ Future<Map<String, dynamic>?> loginUser(String email, String password) async {
 }
 
 Future<bool> addXP(String email, int amount) async {
+  final url = Uri.parse('$baseUrl/xp');
+  print('📤 Sending XP request to $url');
   final response = await http.post(
-    Uri.parse('$baseUrl/xp'),
+    url,
     headers: {'Content-Type': 'application/json'},
-    body: jsonEncode({
-      'email': email,   // ✅ NOT user_id
-      'amount': amount,
-    }),
+    body: jsonEncode({'email': email, 'amount': amount}),
   );
+  print('📥 XP Response: ${response.statusCode} ${response.body}');
   return response.statusCode == 200;
 }
 
