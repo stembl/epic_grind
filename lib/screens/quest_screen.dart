@@ -14,8 +14,20 @@ class QuestScreen extends StatelessWidget {
     String questId,
     int xpAmount,
   ) async {
-    final xpSuccess = await addXP(email, xpAmount);
-    await logAnalytics(email, 'quest_tapped', {'quest_id': questId});
+    final storedEmail = await loadEmail();
+
+    if (storedEmail == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Email not found. Please log in again.")),
+      );
+      return;
+    }
+
+    //print("📤 Sending XP request to $baseUrl/xp");
+    //print("📛 Sending XP for email: $storedEmail");
+
+    final xpSuccess = await addXP(storedEmail, xpAmount);
+    await logAnalytics(storedEmail, 'quest_tapped', {'quest_id': questId});
 
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(

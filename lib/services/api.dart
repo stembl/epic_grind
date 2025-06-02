@@ -3,7 +3,6 @@ import 'package:http/http.dart' as http;
 
 const String baseUrl = "https://api.embl.io";
 
-
 Future<bool> registerUser(String email, String password) async {
   final response = await http.post(
     Uri.parse('$baseUrl/register'),
@@ -44,10 +43,7 @@ Future<Map<String, dynamic>?> loginUser(String email, String password) async {
   final response = await http.post(
     Uri.parse('$baseUrl/login'),
     headers: {'Content-Type': 'application/json'},
-    body: jsonEncode({
-      'email': email,
-      'password': password,
-    }),
+    body: jsonEncode({'email': email, 'password': password}),
   );
 
   if (response.statusCode == 200) {
@@ -59,19 +55,23 @@ Future<Map<String, dynamic>?> loginUser(String email, String password) async {
 
 Future<bool> addXP(String email, int amount) async {
   final url = Uri.parse('$baseUrl/xp');
-  print('📤 Sending XP request to $url');
+
+  //print('📤 Sending XP request to $url');
+  //print("📛 Sending XP for email: $email");
   final response = await http.post(
     url,
     headers: {'Content-Type': 'application/json'},
     body: jsonEncode({'email': email, 'amount': amount}),
   );
-  print('📥 XP Response: ${response.statusCode} ${response.body}');
+  //print('📥 XP Response: ${response.statusCode} ${response.body}');
   return response.statusCode == 200;
 }
 
-
-
-Future<void> logAnalytics(String userId, String type, Map<String, dynamic> details) async {
+Future<void> logAnalytics(
+  String userId,
+  String type,
+  Map<String, dynamic> details,
+) async {
   await http.post(
     Uri.parse('$baseUrl/analytics'),
     headers: {'Content-Type': 'application/json'},
@@ -88,8 +88,12 @@ Future<bool> healthCheck() async {
   return response.statusCode == 200;
 }
 
-
-Future<bool> updateCharacter(String email, String name, String race, String role) async {
+Future<bool> updateCharacter(
+  String email,
+  String name,
+  String race,
+  String role,
+) async {
   final response = await http.patch(
     Uri.parse('$baseUrl/character'),
     headers: {'Content-Type': 'application/json'},
@@ -102,4 +106,3 @@ Future<bool> updateCharacter(String email, String name, String race, String role
   );
   return response.statusCode == 200;
 }
-

@@ -76,7 +76,6 @@ def get_character(email: str, db: Session = Depends(get_db)):
         "xp": db_user.xp
     }
 
-
 @router.post("/xp")
 def update_xp(xp_update: XPUpdate, db: Session = Depends(get_db)):
     db_user = db.query(User).filter(User.email == xp_update.email).first()
