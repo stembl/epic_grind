@@ -22,3 +22,7 @@ backend/.env
 backend/epic_grind.db
 
 @eaDir/
+
+# Ignore release APKs
+build/
+*.apk
